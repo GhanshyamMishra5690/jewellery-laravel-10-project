@@ -1,0 +1,113 @@
+<div class="col-lg-9">  
+     <div class="axil-dashboard-account">
+       <form action="{{route('wholesaler.update.profile')}}" method="POST" id="wholeSaler_accountTab" enctype="multipart/form-data">
+         @csrf
+         <input type="hidden" name="user_id" class="form-control" value="{{auth()->user()->id}}">
+           <div class="row">
+               <div class="col-lg-6">
+                   <div class="form-group">
+                       <label>Name</label>
+                       <input type="text" name="name" class="form-control" value="{{auth()->user()->name}}">
+                       <span class="invalid-error" id="name-error"></span>
+                   </div>
+               </div> 
+               <div class="col-lg-6">
+                   <div class="form-group">
+                       <label>Email</label>
+                       <input type="text" name="email" class="form-control" value="{{auth()->user()->email}}" disabled>
+                       <span class="invalid-error" id="email-error"></span>
+                   </div>
+               </div> 
+               <div class="col-lg-6">
+                   <div class="form-group">
+                       <label>Phone</label>
+                       <input type="number" name="phone" class="form-control" value="{{auth()->user()->phone}}">
+                       <span class="invalid-error" id="phone-error"></span>
+                   </div>
+               </div>
+               <div class="col-lg-6">
+                   <div class="form-group">
+                       <label>Date of Birth</label>
+                       <input type="date" name="dob" class="form-control" value="{{auth()->user()->dob}}">
+                       <span class="invalid-error" id="dob-error"></span>
+                       
+                   </div>
+               </div>
+               <div class="row">
+                <div class="col-lg-6 mb-1">
+                    <label class="  mb-3" style="font-size:14px ">Upload Profile</label>
+                    <input type="file" name="avatar" class="file-upload" onchange="previewImage(this,'saler-user-img')"/>
+                    <span class="invalid-error" id="avatar-error"></span>
+                </div> 
+               </div>
+               <div class="col-lg-6 mt-1">
+                   <div class="form-group">
+                       <label>New Password</label>
+                       <input id="password" type="password" class="form-control" name="password" >
+                       <span class="invalid-error" id="password-error"></span>
+                   </div>
+               </div> 
+               <div class="col-lg-6  mt-1">
+                   <div class="form-group">
+                       <label>Confirm New Password</label>
+                       <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" >
+                       <span class="invalid-error" id="password_confirmation-error"></span>
+                   </div>
+               </div> 
+               <div class="form-group mb--0">
+                   <input type="submit" class="axil-btn" value="Save Changes">
+               </div>
+           </div>
+       </form>
+   </div>
+</div>
+@push('scripts')
+<script>
+    $('#wholeSaler_accountTab').validate({
+        rules: {
+            name: {
+                required: true
+            } 
+        },
+        messages: {
+            name: {
+                required: "This field is required."
+            }  
+        },
+        errorElement: 'span',
+        errorPlacement: function(error, element) {
+            var id = element.attr('id');
+            console.log(element.attr('id'));
+            error.appendTo($('#' + id + '-error'));
+        },
+        submitHandler: function(form) {
+            var formData = new FormData(form); 
+            $('.invalid-error').empty(); 
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                data: formData, 
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    
+                    if (response.success) {
+                        $("#responseHandler").html('<div class="alert alert-success" role="alert">'+response.message+'</div>') 
+                    } else {  
+                        $.each(response.errors, function(field, message) {
+                            $('#' + field).addClass('is-invalid');
+                            $('#' + field + '-error').text(message);
+                        }); 
+                    }
+                },
+                error: function(response) {
+                    var errors = response.responseJSON.errors;
+                    $.each(errors, function(field, messages) {
+                        $('#' + field + '-error').text(messages[0]);
+                    });
+                }
+            });
+        }
+});
+</script>
+@endpush
