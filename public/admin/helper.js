@@ -42,7 +42,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var formData = new FormData(this);
-
+        $("#loader").show();
         $.ajax({
             url: $(this).attr('action'),
             method: 'POST',
@@ -53,6 +53,7 @@ $(document).ready(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                $("#loader").hide();
                 if(response.success){
                     toastr.success(response.message) 
                   } else {
@@ -60,6 +61,7 @@ $(document).ready(function() {
                   } 
             },
             error: function (response) {
+                $("#loader").hide();
                 alert('Image upload failed: ' + response.responseJSON.message);
             }
         });
@@ -164,7 +166,7 @@ $(document).ready(function() {
     
     $('#userType').on('change', function() {
         var selectedValue = $(this).val(); 
-        if (selectedValue == '2') {
+        if (selectedValue == 'wholesaler') {
             $('#show_document_container').show();
         } else {
             $('#show_document_container').hide();
@@ -247,7 +249,7 @@ $(document).ready(function() {
             element.closest('.form-group').append(error);
         },
         submitHandler: function(form) {
-
+            $("#loader").show();
             var $submitButton = $("#submitRegister");
             $submitButton.text("Loading...");
             $submitButton.prop("disabled", true);
@@ -261,6 +263,7 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                     $("#loader").hide();
                     $submitButton.text("Submit");
                     $submitButton.prop("disabled", false);
                     if (response.success) {
@@ -274,7 +277,10 @@ $(document).ready(function() {
                         }
                     }
                 },
-                error: function(response) {
+                error: function(response) { 
+                    $submitButton.text("Submit");
+                    $submitButton.prop("disabled", false);
+                    $("#loader").hide();
                     var errors = response.responseJSON.errors;
                     $.each(errors, function(field, messages) {
                         $('#' + field).addClass('is-invalid');
@@ -337,13 +343,14 @@ $(document).ready(function() {
             error.appendTo($('#' + id + '-error'));
         },
         submitHandler: function(form) {
-
+            $("#loader").show();
             var $submitButton = $("#submitRegister");
             $submitButton.text("Loading...");
             $submitButton.prop("disabled", true);
             var formData = new FormData(form);
             $('.invalid-feedback').empty();
             $('.form-control').removeClass('is-invalid');
+           
             $.ajax({
                 url: form.action,
                 type: form.method,
@@ -351,6 +358,7 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    $("#loader").hide();
                     $submitButton.text("Submit");
                     $submitButton.prop("disabled", false);
                     if (response.success) {
@@ -366,6 +374,7 @@ $(document).ready(function() {
                     }
                 },
                 error: function(response) {
+                    $("#loader").hide();
                     var errors = response.responseJSON.errors;
                     $.each(errors, function(field, messages) {
                         $('#' + field).addClass('is-invalid');
@@ -586,7 +595,7 @@ $('#jewelleriesCreate').validate({
         error.insertAfter(element);
     }, 
     submitHandler: function(form) {
-        
+        $("#loader").show();
         var formData = new FormData(form);
         $.ajaxSetup({
             headers: {
@@ -596,20 +605,21 @@ $('#jewelleriesCreate').validate({
         $.ajax({
             url: form.action,
             type: 'POST', 
-            data: formData, // Send FormData
-            processData: false, // Prevent jQuery from converting the data into a query string
+            data: formData,
+            processData: false,
             contentType: false,
             success: function(response) {
+                $("#loader").hide();
                 if (response.success) {
+                     form.reset();
                      window.location.href = response.redirect;
-                     toastr.success(response.message);
-                     
+                     toastr.success(response.message); 
                 } else {
-                    toastr.error(response.message); // Show error message
+                    toastr.error(response.message);
                 }
             },
             error: function(xhr) {
-               
+                $("#loader").hide();
                 if(xhr.responseJSON.errors){
                     var errors = xhr.responseJSON.errors; // Get the 'errors' object from the response
  

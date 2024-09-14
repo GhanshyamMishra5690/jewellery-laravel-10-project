@@ -89,7 +89,7 @@
                               </button>
                               @endif  
                               @if ($user->userType == config('constants.USER_TYPES.WHOLESALER') AND $user->status == 0)
-                                  <button type="button" onclick="approveAccount('{{$user->id}}','{{ route('admin.user.approve') }}')" class="btn btn-primary btn-sm" >Approve</button>
+                                  <button type="button" id="btn_{{$user->id}}" onclick="approveAccount('{{$user->id}}','{{ route('admin.user.approve') }}')" class="btn btn-primary btn-sm" >Approve</button>
                               @else 
                                <button id=" " class="btn btn-primary btn-sm " disabled>Approved</button>
                                @endif 
@@ -189,7 +189,9 @@
                       }, 
                       success: function(response) { 
                         if(response.success){
+                          $("#btn_"+id).prop("disabled", true);
                           toastr.success(response.message) 
+                        
                         } else {
                           toastr.error(response.message) 
                         }

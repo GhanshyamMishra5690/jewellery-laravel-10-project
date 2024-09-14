@@ -51,7 +51,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-6">
                 <div class="axil-signin-banner bg_image bg_image--10">
-                    <h3 class="title">We Offer the Best Products {{ $user->otp->otp }}</h3>
+                    <h3 class="title">We Offer the Best Products </h3>
                 </div>
             </div>
             <div class="col-lg-6 offset-xl-2 mt-5">
@@ -68,7 +68,7 @@
                                        
                                         <input type="hidden" name="user_id" value="{{ $user->id }}">
                                         <input id="otp" type="number" class="form-control @error('otp') is-invalid @enderror" name="otp"  >
-                                        <label style="float: right;color:red;">OTP Expires in: <span id="countdown"></span></label>
+                                        <label style="float: right;color:red;">OTP Expires in({{ $user->otp->otp }}): <span id="countdown"></span> </label>
                                         @error('otp')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

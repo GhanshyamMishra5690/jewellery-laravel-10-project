@@ -385,7 +385,7 @@
                         $(element).removeClass('is-invalid'); // Remove is-invalid class from the valid input
                     },
                 submitHandler: function(form) {
-                   
+                    $("#loader").show();
                     //var formData = $(form).serialize(); // Serialize form data
                     var formData = new FormData(form);
                     $('#message').html('');
@@ -396,6 +396,7 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
+                            $("#loader").hide();
                             if(response.success){ 
                                 window.location.href = response.url;
                                 toastr.success(response.message)  
@@ -405,7 +406,7 @@
                           
                         },
                         error: function(xhr) {
-                            // Handle errors here
+                            $("#loader").hide();
                             if (xhr.status === 422) {
                                 // Validation error
                                 var errors = xhr.responseJSON.errors;

@@ -1,6 +1,7 @@
 
 @include('layouts.user.header')
-<body class="sticky-header">  
+<body class="sticky-header"> 
+<div id="loader" style="display: none;">Loading...</div> 
 <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
     <!-- Start Header -->
     <header class="header axil-header header-style-5">

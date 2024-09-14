@@ -184,11 +184,11 @@ class RegisterController extends Controller
 
     public function showOtpVerificationForm(User $user)
     {
-        
-        if($user && Otp::where('user_id', $user->id)->where('is_verified', 0)->first()){
+        $otp = Otp::where('user_id', $user->id)->where('is_verified', 0)->first();
+        if($user && $otp){
              $expiresAt =  Carbon::parse($user->otp->expires_at)->format('M d, Y H:i:s'); 
               
-            return view('auth.verify', compact('user','expiresAt'));
+            return view('auth.verify', compact('user','expiresAt','otp'));
         } else {
            Session::flash('error-message','Your Otp is expiry');
            return redirect()->route('register');

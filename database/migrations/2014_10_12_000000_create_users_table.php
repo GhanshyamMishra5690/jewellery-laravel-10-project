@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('username')->unique()->nullable();
             $table->string('avatar')->nullable();
+            $table->string('document')->nullable();
             $table->string('phone')->nullable();
             $table->string('dob')->nullable();
             $table->string('password');
@@ -25,8 +26,7 @@ return new class extends Migration
             $table->enum('userType', ['admin', 'user','wholesaler'])->default('user');
             $table->rememberToken();
             $table->timestamps();
-        });
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }); 
     }
 
     /**

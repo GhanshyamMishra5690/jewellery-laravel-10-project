@@ -26,13 +26,23 @@
             color: red;
             font-size: 0.875em;
         }
-       
+        #loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 27px;
+        }
     </style>
 </head>
 
 
 <body>
-      
+    <div id="loader" style="display: none;">Loading...</div> 
     @yield('auth_content')
     
     <script src="{{ asset('user/assets/js/vendor/modernizr.min.js') }}"></script> 
