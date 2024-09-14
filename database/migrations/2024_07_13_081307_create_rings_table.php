@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('rings', function (Blueprint $table) {
             $table->id();
-            $table->text('name')->nullable(); 
-            $table->unsignedBigInteger('jw_cat_id');
+            $table->text('name')->nullable();  
             $table->string('slug')->unique();
             $table->string('shape')->nullable();
             $table->string('metal_type')->nullable();
@@ -39,7 +38,7 @@ return new class extends Migration
             $table->decimal('stone_user_price', 15, 2)->nullable();
             $table->decimal('stone_wholesaler_price', 15, 2)->nullable(); 
             $table->timestamps();
-            $table->foreign('jw_cat_id')->references('id')->on('jewelleries')->onDelete('cascade');
+           
         });
     }
 
