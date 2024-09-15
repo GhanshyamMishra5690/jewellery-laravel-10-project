@@ -120,16 +120,16 @@ class RingController extends Controller
                 }
             }
         } 
-         $settingImageName = 'setting_image_' . time() . '.' . $request->setting_image->getClientOriginalExtension();
-         $stoneImageName = 'stone_image_' . time() . '.' . $request->stone_image->getClientOriginalExtension();
- 
-         $settingImagePath = $request->file('setting_image')->storeAs('images/ring', $settingImageName, 'public');
-         $stoneImagePath = $request->file('stone_image')->storeAs('images/ring', $stoneImageName, 'public');
-        
-        //  $ring->setting_image = $settingImagePath;
-        //  $ring->stone_image = $stoneImagePath;
-         $result['setting_image'] = $settingImagePath;
-         $result['stone_image']   = $stoneImagePath;
+        if(!empty($request->get('setting_image'))) {
+            $settingImageName = 'setting_image_' . time() . '.' . $request->setting_image->getClientOriginalExtension(); 
+            $settingImagePath = $request->file('setting_image')->storeAs('images/ring', $settingImageName, 'public');
+            $result['setting_image'] = $settingImagePath; 
+        }
+        if(!empty($request->get('stone_image'))) {
+            $stoneImageName = 'stone_image_' . time() . '.' . $request->stone_image->getClientOriginalExtension();
+            $stoneImagePath = $request->file('stone_image')->storeAs('images/ring', $stoneImageName, 'public');  
+            $result['stone_image']   = $stoneImagePath;
+        } 
        
         $res = Ring::where('id', $request->get('id'))->update($result);
          if($res){

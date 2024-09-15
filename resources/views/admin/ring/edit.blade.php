@@ -420,9 +420,7 @@
             setting_profile: {
                 required: true
             },
-            setting_image: {
-                required: true
-            },
+            
             setting_description: {
                 required: true
             },
@@ -456,9 +454,7 @@
             stone_ratio: {
                 required: true
             },
-            stone_image: {
-                required: true
-            }
+            
         },
         messages: {
             name: {
@@ -479,9 +475,7 @@
             setting_profile: {
                 required: 'This field is required'
             },
-            setting_image: {
-                required: 'This field is required'
-            },
+            
             setting_description: {
                 required: 'This field is required'
             },
@@ -513,9 +507,6 @@
                 required: 'This field is required',
             },
             stone_ratio: {
-                required: 'This field is required'
-            },
-            stone_image: {
                 required: 'This field is required'
             }  
         },

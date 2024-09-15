@@ -34,10 +34,10 @@ class UpdateProductRequest extends FormRequest
             'setting_style' => 'required|string|max:255',
             'band_type' => 'required|string|max:255',
             'setting_profile' => 'required|string|max:255',
-            'setting_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'setting_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'setting_description' => 'nullable|string',
             'stoneType' => 'required|string',
-            'stone_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'stone_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
 
         switch ($this->stoneType) {

@@ -59,6 +59,7 @@
                                 </div>
                                 <div class="col-4 form-group mt-2">
                                     <label>Image : <b>---- </b></label>
+                                    <img src="{{asset('storage/'.$ring->setting_image)}}" width="100px" class="img-responsive" />
                                 </div>
                             </div>
                         </div>
@@ -75,7 +76,8 @@
                                     <label for="stoneType">Stone Type : <b>{{ $ring->stoneType }}</b></label>
                                 </div>
                                 <div class="col-4 form-group mt-2">
-                                    <label>Image : <b>{{ $ring->stone_image }}</b> </label>
+                                    <label>Image : <b> </b> </label>
+                                    <img src="{{asset('storage/'.$ring->stone_image)}}" width="100px" class="img-responsive" />
                                 </div>
                             </div>
                             @if ($ring->stoneType == 'lab-grown-diamond"')
