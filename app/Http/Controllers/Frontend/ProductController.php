@@ -22,13 +22,13 @@ class ProductController extends Controller
      public function productDetails($slug) {
        
         if ($slug) {
-            $products = Ring::with('jewellery')->where('slug', 'LIKE', '%' . $slug . '%')
+            $products = Ring::where('slug', 'LIKE', '%' . $slug . '%')
             ->orderBy('name', 'asc')
             ->first();
         } else {
             $products = collect([]);
         }
-       
+      
       return view('product-details', compact('products'));
      }
      public function productView($slug) {

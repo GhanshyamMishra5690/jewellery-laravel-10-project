@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rings', function (Blueprint $table) {
             $table->id();
-            $table->text('name')->nullable();  
+            $table->text('name')->nullable();                      
             $table->string('slug')->unique();
             $table->string('shape')->nullable();
             $table->string('metal_type')->nullable();

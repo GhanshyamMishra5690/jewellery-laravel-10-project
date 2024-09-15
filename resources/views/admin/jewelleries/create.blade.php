@@ -306,23 +306,12 @@
                                 <!-- Diamond Weight -->
                                 <div class="col-3 form-group mb-2">
                                     <label for="diamond_weight" class="form-label">Diamond Weight</label>
-                                    <select id="diamond_weight" name="diamond_weight" class="custom-select">
-                                        <option value="">Select Diamond Weight</option>
-                                        @foreach (config('constants.jewellery.DIAMOND_WEIGHT') as $weight)
-                                            @php
-                                                $weightName = strtolower(str_replace(' ', '_', $weight));
-                                            @endphp
-                                            <option value="{{ $weightName }}"
-                                                {{ old('diamond_weight') == $weightName ? 'selected' : '' }}>
-                                                {{ $weight }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="number" id="diamond_weight" name="diamond_weight" class="form-control"
+                                    value="{{ old('diamond_weight') }}"> 
                                     @error('diamond_weight')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
-                                </div>
-
+                                </div> 
                                 <div class="col-3 form-group mb-2">
                                     <label for="no_of_diamonds" class="form-label">No of Diamonds</label>
                                     <input type="number" id="no_of_diamonds" name="no_of_diamonds" class="form-control"

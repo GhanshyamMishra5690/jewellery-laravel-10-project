@@ -14,6 +14,7 @@ class PaypalController extends Controller
 
     public function paypal(Request $request)
     {
+    
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $provider->setCurrency('USD');
@@ -53,23 +54,23 @@ class PaypalController extends Controller
     
     public function success(Request $request)
     {
-       
+        
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
         $paypalResponse = $provider->capturePaymentOrder($request->token); 
        
         if(isset($paypalResponse['status']) && $paypalResponse['status'] == 'COMPLETED') {
-            
+            $order_id = session()->get('order_id');
             $this->storePayment($paypalResponse); 
-            $order = Order::find(session()->get('order_id'));
+            $order = Order::find($order_id);
             $order->status = Order::STATUS_PROCESSING;
             $order->save();
             session()->flash('status', 'success');
             session()->flash('message', 'Payment successful. Thank you for your order!');
             return view('payment.response', [
                 'paymentId' => $paypalResponse['id'],
-                'orderId' => session()->get('order_id'),
+                'orderId' => $order_id,
                 'payerName' => $paypalResponse['payer']['name']['given_name'] . ' ' . $paypalResponse['payer']['name']['surname'],
                 'amount' => $paypalResponse['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
                 'currency' => $paypalResponse['purchase_units'][0]['payments']['captures'][0]['amount']['currency_code'],

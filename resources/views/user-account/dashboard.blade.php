@@ -18,11 +18,15 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4">
-                    {{-- <div class="inner">
+                     <div class="inner">
                         <div class="bradcrumb-thumb">
-                            <img src="{{ asset('storage/'.auth()->user()->avatar)}}" alt="Image">
+                            @if (empty(auth()->user()->avatar))
+                            <img src="{{asset('user/assets/images/avatar.jpg')}}" alt="Image" class="img-responsive profile-logo" width="50px" id="saler-user-img">
+                            @else 
+                            <img src="{{ asset('storage/'.auth()->user()->avatar)}}" alt="Image" class="img-responsive profile-logo" width="50px" id="saler-user-img">
+                            @endif 
                         </div>
-                    </div> --}}
+                    </div>  
                 </div>
             </div>
         </div>
@@ -42,7 +46,7 @@
                                     <a class="nav-item nav-link active" data-bs-toggle="tab" href="#nav-dashboard" role="tab" aria-selected="true"><i class="fas fa-th-large"></i>Dashboard</a>
                                     {{-- <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-orders" role="tab" aria-selected="false"><i class="fas fa-shopping-basket"></i>Orders</a> --}}
                                     {{-- <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-downloads" role="tab" aria-selected="false"><i class="fas fa-file-download"></i>Downloads</a> --}}
-                                    {{-- <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false"><i class="fas fa-home"></i>Addresses</a> --}}
+                                    <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-home"></i>Addresses</a>  
                                     <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-account" role="tab" aria-selected="false"><i class="fas fa-user"></i>Account Details</a>
                                     <a class="nav-item nav-link" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -80,71 +84,11 @@
                                     <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
                                 </div>
                             </div> 
+                            <div class="tab-pane fade" id="nav-address" role="tabpanel">
+                                @include('user-account.accounts.address-tab')
+                            </div>
                             <div class="tab-pane fade" id="nav-account" role="tabpanel">
-                                <div class="col-lg-9">
-                                    <div class="axil-dashboard-account">
-                                        <form action="{{route('wholesaler.update.profile')}}" method="POST" enctype="multipart/form-data">
-                                          @csrf
-                                          <input type="hidden" name="user_id" class="form-control" value="{{auth()->user()->id}}">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Name</label>
-                                                        <input type="text" name="name" class="form-control" value="{{auth()->user()->name}}">
-                                                        @error('password')
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </div>
-                                                </div> 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input type="email" name="email" class="form-control" value="{{auth()->user()->email}}">
-                                                    </div>
-                                                </div> 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Phone</label>
-                                                        <input type="number" name="phone" class="form-control" value="{{auth()->user()->phone}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Date of Birth</label>
-                                                        <input type="date" name="dob" class="form-control" value="{{auth()->user()->dob}}">
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <h5 class="title mb-3">Password Change</h5> 
-                                                    <div class="form-group">
-                                                        <label>New Password</label>
-                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" >
-                                                        @error('password')
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Confirm New Password</label>
-                                                        <input id="password-confirm" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" >
-                                                        @error('password_confirmation')
-                                                            <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                        @enderror
-                                                    </div>
-                                                    <div class="form-group mb--0">
-                                                        <input type="submit" class="axil-btn" value="Save Changes">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                @include('user-account.accounts.account-tab')
                             </div>
                         </div>
                     </div>
@@ -170,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <!-- End .container -->
+        
     </div>
  
 </main>

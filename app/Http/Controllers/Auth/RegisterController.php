@@ -108,12 +108,17 @@ class RegisterController extends Controller
                'phone' => ['required', 'regex:/^[0-9]{10,15}$/'], 
         ];
         if($request->get('phone') > 0){
-            $request->get('name');
+            $phone = User::where('phone', $request->get('phone'))->exists();
+            if($phone){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'phone is already taken.'
+                ]);
+            }
         }
 
-        if(!empty($request->file('document'))){
+        if(!empty($request->file('document')) && $request->get('userType') === config('constants.USER_TYPES.WHOLESALER')){
             $rules['document'] = ['required', 'file', 'mimes:jpeg,png,jpg,gif,pdf', 'max:2048'];
-            
         }
        
         $validator = Validator::make($request->all(), $rules);
@@ -131,8 +136,7 @@ class RegisterController extends Controller
         }   
         $data= []; 
         $data= [
-            'name' => $request->get('name'),
-            'username' => $fullName[0],
+            'name' => $request->get('name'), 
             'email' => $request->get('email'),
             'phone' => $request->get('phone'),
             'status' => $status ,

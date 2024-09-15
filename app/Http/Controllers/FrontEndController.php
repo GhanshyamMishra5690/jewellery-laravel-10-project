@@ -15,8 +15,17 @@ class FrontEndController extends Controller
 {
     use ImageUploadTrait;
      public function user(){
-      
-        return view('user-account.dashboard');
+        $addressId = $street_address = $city = $state = $country = $postal_code = $is_shipping ='';
+        if(Auth::user()->addresses){
+            $addressId       = Auth::user()->addresses->id;
+            $street_address  = auth()->user()->addresses->street_address;
+            $city            = auth()->user()->addresses->city;
+            $state           = auth()->user()->addresses->state;
+            $country         = auth()->user()->addresses->country;
+            $postal_code     = auth()->user()->addresses->postal_code;
+            $is_shipping     = auth()->user()->addresses->is_shipping;
+        }
+        return view('user-account.dashboard', compact('addressId','street_address','city','state','country','postal_code','is_shipping',));
      }
 
      public function wholesaler (){ 
@@ -51,7 +60,7 @@ class FrontEndController extends Controller
             ]);
         }
   
-        $user = User::find($request->user_id);
+        $user = User::find(Auth::user()->id);
         $user->name = $request->name;
         $user->phone = $request->phone;
         $user->dob = $request->dob;
@@ -71,6 +80,7 @@ class FrontEndController extends Controller
        
      }
      public function address(Request $request) {
+ 
          $validator = Validator::make($request->all(), [
             'street_address' => ['required', 'string'],
             'city' => ['required', 'string'],
@@ -97,14 +107,14 @@ class FrontEndController extends Controller
             } else {
                 $address = new Address();
             }
-            $address->user_id = $request->get('user_id');  
+            $address->user_id = Auth::user()->id;  
             $address->street_address = $request->get('street_address');  
             $address->city = $request->get('city');  
             $address->state = $request->get('state');  
             $address->postal_code = $request->get('postal_code');  
             $address->country = $request->get('country');  
             
-            if($request->filled('is_shipping')  && !empty($request->filled('is_shipping'))){
+            if($request->filled('is_shipping')  && !empty($request->has('is_shipping'))){
                 $address->ship_street_address = $request->get('street_address');  
                 $address->ship_city = $request->get('city');  
                 $address->ship_state = $request->get('state');  

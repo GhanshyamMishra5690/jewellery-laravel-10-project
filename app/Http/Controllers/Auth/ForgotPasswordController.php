@@ -57,7 +57,7 @@ class ForgotPasswordController extends Controller
                 $message->subject('Password Reset Request');
             }); 
         } catch (\Exception $e) {
-            Log::error('Error sending password reset email: ' . $e->getMessage());
+            \Log::error('Error sending password reset email: ' . $e->getMessage());
             return back()->withErrors(['email' => 'There was an issue sending the reset email. Please try again later.']);
         }
 

@@ -133,10 +133,17 @@
                                 </td>
                               
                                 <!-- End Quentity Action  -->
-
+                                @php
+                                    $price = 0;
+                                    if(Auth::user() && auth()->user()->userType == config('constants.USER_TYPES.WHOLESALER')){
+                                            $price = $products->product_price ;
+                                    } else {
+                                            $price = $products->user_price ;
+                                    }
+                                @endphp
                                 <!-- Start Product Action  -->
                                 <ul class="product-action d-flex-center mb--0">
-                                    <li class="add-to-cart"><a href="#" class="axil-btn btn-bg-primary "  onclick="addToCart('{{$products->id}}','CART_FIELD')">Add to Cart</a></li>
+                                    <li class="add-to-cart"><a href="#" class="axil-btn btn-bg-primary "  onclick="addToCart('{{$products->id}}','{{$price}}','ADD')">Add to Cart</a></li>
                                     <li class="wishlist"><a href="#" onclick="addWishList('{{$products->id}}')" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                 </ul>
                                 <!-- End Product Action  -->

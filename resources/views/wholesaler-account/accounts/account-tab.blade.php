@@ -1,6 +1,6 @@
 <div class="col-lg-9">  
      <div class="axil-dashboard-account">
-       <form action="{{route('wholesaler.update.profile')}}" method="POST" id="wholeSaler_accountTab" enctype="multipart/form-data">
+       <form action="{{route('wholesaler.update.profile')}}" method="POST"  id="dashboardAccount"  enctype="multipart/form-data">
          @csrf
          <input type="hidden" name="user_id" class="form-control" value="{{auth()->user()->id}}">
            <div class="row">
@@ -62,52 +62,5 @@
    </div>
 </div>
 @push('scripts')
-<script>
-    $('#wholeSaler_accountTab').validate({
-        rules: {
-            name: {
-                required: true
-            } 
-        },
-        messages: {
-            name: {
-                required: "This field is required."
-            }  
-        },
-        errorElement: 'span',
-        errorPlacement: function(error, element) {
-            var id = element.attr('id');
-            console.log(element.attr('id'));
-            error.appendTo($('#' + id + '-error'));
-        },
-        submitHandler: function(form) {
-            var formData = new FormData(form); 
-            $('.invalid-error').empty(); 
-            $.ajax({
-                url: form.action,
-                method: form.method,
-                data: formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    
-                    if (response.success) {
-                        $("#responseHandler").html('<div class="alert alert-success" role="alert">'+response.message+'</div>') 
-                    } else {  
-                        $.each(response.errors, function(field, message) {
-                            $('#' + field).addClass('is-invalid');
-                            $('#' + field + '-error').text(message);
-                        }); 
-                    }
-                },
-                error: function(response) {
-                    var errors = response.responseJSON.errors;
-                    $.each(errors, function(field, messages) {
-                        $('#' + field + '-error').text(messages[0]);
-                    });
-                }
-            });
-        }
-});
-</script>
+ 
 @endpush

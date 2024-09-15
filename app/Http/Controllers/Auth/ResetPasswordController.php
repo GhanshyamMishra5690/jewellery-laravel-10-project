@@ -62,7 +62,7 @@ class ResetPasswordController extends Controller
 
         // Delete the token
         DB::table('password_resets')->where('email', $request->email)->delete();
-        Session::flash('error-message','Password has been successfully reset!');
-        return redirect()->route('admin.login')->with('status', 'Password has been successfully reset!');
+        Session::flash('error','Password has been successfully reset!');
+        return redirect()->route('login')->with('status', 'Password has been successfully reset!');
     }
 }

@@ -73,9 +73,9 @@ class CheckoutController extends Controller
                     'updated_at' => now(),
                 ]);
             }
-            // $cart = Cart::where('id', $request->get('cart_id'))->first();
-            // $cart->cartItems()->delete();
-            // $cart->delete(); 
+            $cart = Cart::where('id', $request->get('cart_id'))->first();
+            $cart->cartItems()->delete();
+            $cart->delete(); 
             session()->put('order_details', [
                 'order_id' => $orderId,
                 'total_amount' => $subTotal,

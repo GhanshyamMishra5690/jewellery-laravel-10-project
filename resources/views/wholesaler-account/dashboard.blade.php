@@ -21,6 +21,7 @@
                     <div class="inner">
                         
                         <div class="bradcrumb-thumb">
+                            
                             @if (empty(auth()->user()->avatar))
                             <img src="{{asset('user/assets/images/avatar.jpg')}}" alt="Image" class="img-responsive profile-logo" width="50px" id="saler-user-img">
                             @else 

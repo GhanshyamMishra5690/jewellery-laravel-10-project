@@ -653,3 +653,182 @@ $('#jewelleriesCreate').validate({
         });
     }
 });
+
+  
+$('#dahboard_addressTab').validate({
+    rules: {
+        street_address: {
+            required: true
+        },
+        city: {
+            required: true
+        },
+        state: {
+            required: true
+        },
+        postal_code: {
+            required: true,
+            digits: true, // Example rule for numeric only, adjust as needed
+            minlength: 6, // Example rule, adjust as needed
+            maxlength: 10 // Example rule, adjust as needed
+        },
+        country: {
+            required: true
+        } 
+    },
+    messages: {
+        street_address: {
+            required: "This field is required."
+        },
+        city: {
+            required: "This field is required." 
+        },
+        state: {
+            required: "This field is required." 
+        },
+        postal_code: {
+            required: "This field is required.",
+            digits: "Postal code must contain only digits.",
+            minlength: "Postal code must be at least {0} characters long.",
+            maxlength: "Postal code cannot be more than {0} characters long." 
+        },
+        country: {
+            required: "This field is required." 
+        }
+         
+    },
+errorElement: 'span',
+errorPlacement: function(error, element) {
+    var id = element.attr('id');
+    console.log(element.attr('id'));
+    error.appendTo($('#' + id + '-error'));
+},
+submitHandler: function(form) {
+    var formData = new FormData(form); 
+    $('.invalid-error').empty(); 
+    $.ajax({
+        url: form.action,
+        method: form.method,
+        data: formData, 
+        processData: false,
+        contentType: false,
+        success: function(response) { 
+            $("#loader").hide();
+            if(response.success){
+                toastr.success(response.message) 
+              } else {
+                toastr.error(response.message) 
+              }   
+        },
+        error: function(response) {
+            $("#loader").hide();
+            var errors = response.responseJSON.errors;
+            $.each(errors, function(field, messages) {
+                $('#' + field + '-error').text(messages[0]);
+            });
+        }
+    });
+}
+});
+
+$("#dashboardAccount").validate({
+    rules: {
+        name: {
+            required: true,
+            minlength: 3
+        },
+        email: {
+            required: true,
+            email: true
+        },
+        phone: {
+            required: true,
+            digits: true,
+            minlength: 10,
+            maxlength: 15
+        },
+        dob: {
+            required: true,
+            date: true
+        },
+        password: {
+           minlength: 8
+        },
+        password_confirmation: {
+            equalTo: "#password"
+        },
+        profile_image: {
+            required: function (element) {
+                return $("#profile_image").val() !== ''; // Validate if value exists
+            },
+            extension: "jpg|jpeg|png|gif"
+        }
+    },
+    messages: {
+        name: {
+            required: "This field is required.",
+            minlength: "Name must be at least 3 characters long"
+        },
+        email: {
+            required: "This field is required.",
+            email: "Please enter a valid email address"
+        },
+        phone: {
+            required: "This field is required.",
+            digits: "Please enter only digits",
+            minlength: "Phone number must be at least 10 digits",
+            maxlength: "Phone number must not exceed 15 digits"
+        },
+        
+        dob: {
+            required: "Please select your date of birth"
+        },
+        password: {
+            required: "This field is required.",
+            minlength: "Your password must be at least 6 characters long"
+        },
+        password_confirmation: {
+            equalTo: "Password confirmation does not match"
+        },
+        profile_image: {
+            extension: "Only image files (jpg, jpeg, png, gif) are allowed"
+        }
+    },
+    errorElement: "span",
+    errorPlacement: function(error, element) {
+        error.addClass("invalid-feedback");
+        element.closest(".form-group").addClass("has-error");
+        error.insertAfter(element);
+    },
+    submitHandler: function(form) {
+        $("#loader").show();
+        var formData = new FormData(form);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }); 
+        $.ajax({
+            url: form.action,
+            type: 'POST', 
+            data: formData,  
+            processData: false, 
+            contentType: false,
+            success: function(response) {
+                $("#loader").hide();
+                if (response.success) { 
+                     toastr.success(response.message);
+                     location.reload(); 
+                } else {
+                    toastr.error(response.message); 
+                }
+            },
+            error: function(xhr) {
+                $("#loader").hide();
+                displayErrors(xhr.responseJSON.errors); 
+               
+            }
+        });
+    }
+});
+

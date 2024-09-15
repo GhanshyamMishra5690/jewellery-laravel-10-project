@@ -79,6 +79,7 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 Route::middleware(['user'])->prefix('user')->group(function () {
     Route::get('/dashboard', [FrontEndController::class, 'user'])->name('user.dashboard');
     Route::post('/update/profile', [FrontEndController::class, 'profile'])->name('user.update.profile');
+    Route::post('/update/address',[FrontEndController::class,'address'])->name('user.update.address');
 });
 
 Route::get('/user/account', function () {
