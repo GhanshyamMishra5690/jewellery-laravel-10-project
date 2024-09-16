@@ -100,7 +100,12 @@
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">Verification Done</th>
-                                                    <td><a href="download/{{ asset('storage/'.auth()->user()->document)}}" class="axil-btn view-btn"><i class="fas fa-file-download"></i> Download</a></td>
+                                                    <td>
+                                                        
+                                                        <a href="{{ url('download', [auth()->user()->id]) }}" class="axil-btn view-btn">
+                                                            <i class="fas fa-file-download"></i> Download
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

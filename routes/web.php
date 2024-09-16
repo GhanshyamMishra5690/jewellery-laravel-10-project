@@ -53,11 +53,8 @@ Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-condition', [HomeController::class, 'termsCondition'])->name('terms-condition');
  
-Route::get('download/{filename}', function($filename)
-{
-    $file = storage_path('app') . '/' . $filename; // or wherever you have stored your PDF files
-    return response()->download($file);
-});
+ 
+Route::get('download/{id}', [UserController::class, 'downloadPdf'])->name('download.pdf');
 Route::get('document/view/{id}', [UserController::class, 'viewFile']) ;
   
 Auth::routes();

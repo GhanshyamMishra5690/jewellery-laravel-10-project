@@ -78,6 +78,7 @@ class UserController extends Controller
         //
     }
 
+   
     public function viewFile($id)
     {
         $file = User::where('id', $id)->first();
@@ -108,5 +109,16 @@ class UserController extends Controller
             abort(400, 'Unsupported file type.');
         }
     }
-    
+    public function downloadPdf($id)
+    {
+        $file = User::where('id', $id)->first();
+        $filename = $file->document;
+        $filePath = storage_path('app/public/' . $filename); 
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('info', 'File not found.'); 
+        }
+
+    }
 }
