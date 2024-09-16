@@ -18,11 +18,10 @@ class WholesalerAccess
     public function handle(Request $request, Closure $next): Response
     {
         
-        $user = Auth::user(); 
-        // Check if the user is authenticated and is a wholesaler
+        $user = Auth::user();  
         if ($user && $user->userType === config('constants.USER_TYPES.WHOLESALER')) {
-                if ($user->status === 0) {
-                    return redirect()->route('verification')->with('error', 'Your account is not approved yet. Please wait for admin approval.');
+                if ($user->status == 0) {
+                    return redirect()->route('verification')->with('status', 'Your account is not approved yet. Please wait for admin approval.');
                 } 
             return $next($request);
         }

@@ -1,12 +1,12 @@
 <div class="col-lg-9">      
     <h3 class="title">Billing Address</h3>
     <div class="axil-dashboard-account">
-       <form action="{{route('wholesaler.update.address')}}" method="POST" id="dahboard_addressTab" enctype="multipart/form-data">
+       <form action="{{route('user.update.address')}}" method="POST" id="dahboard_addressTab" enctype="multipart/form-data">
          @csrf 
-           
+          
         <input type="hidden" name="address_id" class="form-control" value="{{ $addressId }}">
-           <div class="row"> 
-               <div class="col-lg-6">
+           <div class="row">
+               <div class="col-lg-6"> 
                    <div class="form-group">
                        <label>Street Address</label>
                        <input type="text" name="street_address" id="street_address" class="form-control"  value="{{ $street_address}}">

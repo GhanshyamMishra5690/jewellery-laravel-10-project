@@ -57,7 +57,7 @@ class FrontEndController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
-            ]);
+            ], 500);
         }
   
         $user = User::find(Auth::user()->id);

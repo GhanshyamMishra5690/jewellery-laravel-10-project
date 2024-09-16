@@ -75,17 +75,17 @@
                             @endforeach
                             
                           </td>
-                           <td>
+                           <td id="status_{{$user->id}}">
                             @if ($user->status == 0)
-                              <span class="badge bg-danger float-center">Pending</span>
+                              <span class="badge bg-danger float-center" id="status_{{$user->id}}">Pending</span>
                             @else
-                              <span class="badge badge-success">Active</span></td>  
+                              <span class="badge badge-success float-center" >Active</span></td>  
                             @endif 
                            <td>{{ $user->created_at->format('j M  Y ') }}</td>
                            <td>
-                              @if ($user->userType == 2 )
-                                <button  class="btn btn-info btn-sm" onclick="openPdfModal('{{ url('/document/view') }}','{{$user->id}}')">
-                                  View Doc
+                              @if ($user->userType == config('constants.USER_TYPES.WHOLESALER') )
+                                <button  class="btn btn-info btn-sm" onclick="openPdfModal('{{ url('/document/view') }}','{{$user->id}}','{{ asset('storage/'.$user->document)}}')">
+                                  KYC
                               </button>
                               @endif  
                               @if ($user->userType == config('constants.USER_TYPES.WHOLESALER') AND $user->status == 0)
@@ -112,14 +112,17 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Document</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">KYC Verification</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-                <div  id="pdfObjec/t">  </div>
-                <iframe id="document_pdfFrame" src="" width="100%" height="500px"></iframe> 
+            <div class="modal-body"> 
+                  <iframe id="document_pdfFrame" style="display: none; width: 100%; height: 500px;"></iframe> 
+                  <img id="image_Frame" style="display: none; width: 100%; max-height: 500px;" />
+                  <div id="error_message" style="display: none; color: red; text-align: center;">
+                    Unable to display the file. Unsupported file type or invalid path.
+                  </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> 
@@ -190,6 +193,7 @@
                       success: function(response) { 
                         if(response.success){
                           $("#btn_"+id).prop("disabled", true);
+                          $("#status_"+id).html("<span class='badge badge-success float-center'>Active</span>");
                           toastr.success(response.message) 
                         
                         } else {
@@ -208,14 +212,30 @@
       <script src="https://unpkg.com/pdfobject"></script>
 
       <script>
-        function openPdfModal(url, id) {
-          // Construct the URL for the PDF
-          let pdfUrl = "{{ url('/document/view') }}/" + id; 
-          document.getElementById('document_pdfFrame').src = pdfUrl;
-          
+         function openPdfModal(url, id, filepath) {
+          var fileExtension = filepath.split('.').pop().toLowerCase();
+
+          // Hide all elements initially
+          document.getElementById('document_pdfFrame').style.display = 'none';
+          document.getElementById('image_Frame').style.display = 'none';
+          document.getElementById('error_message').style.display = 'none';
+
+          if (fileExtension === 'pdf') {
+              // If it's a PDF, show the PDF iframe
+              let pdfUrl = "{{ url('/document/view') }}/" + id;
+              document.getElementById('document_pdfFrame').src = pdfUrl;
+              document.getElementById('document_pdfFrame').style.display = 'block';
+          } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+              // If it's an image, show the image element
+              document.getElementById('image_Frame').src = filepath;
+              document.getElementById('image_Frame').style.display = 'block';
+          } else {
+              // If the file type is unsupported or can't be extracted, show an error message
+              document.getElementById('error_message').style.display = 'block';
+          }
+
           // Show the modal
           $('#pdfModal').modal('show');
       }
-        
     </script>
 @endpush

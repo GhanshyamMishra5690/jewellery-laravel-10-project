@@ -16,23 +16,23 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::create([
             'name' => 'Ghanshyam Mishra',
-            'email' => 'admin@gmail.com',
-            'username' => 'ghanshyam',
+            'email' => 'admin@gmail.com', 
             'userType' => 'admin',
+            'status' => 1,
             'password' => Hash::make('12345678'),
         ]);
         \App\Models\User::create([
             'name' => 'Regular User',
-            'email' => 'regular@gmail.com',
-            'username' => 'regular',
+            'email' => 'regular@gmail.com', 
             'userType' => 'user',
+            'status' => 1,
             'password' => Hash::make('12345678'),
         ]);
         \App\Models\User::create([
             'name' => 'Wholesaler',
-            'email' => 'saler@gmail.com',
-            'username' => 'Wholesaler',
+            'email' => 'saler@gmail.com', 
             'userType' => 'wholesaler',
+            'status' => 1,
             'password' => Hash::make('12345678'),
         ]);
     }

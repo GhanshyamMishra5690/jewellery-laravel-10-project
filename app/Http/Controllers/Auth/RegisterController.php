@@ -121,15 +121,13 @@ class RegisterController extends Controller
             $rules['document'] = ['required', 'file', 'mimes:jpeg,png,jpg,gif,pdf', 'max:2048'];
         }
        
-        $validator = Validator::make($request->all(), $rules);
-
+        $validator = Validator::make($request->all(), $rules); 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
             ]);
         }
-        $fullName = explode(' ',  $request->get('name')) ;
         $status = '1';
         if($request->get('userType') == config('constants.USER_TYPES.WHOLESALER')){
             $status = '0';
@@ -143,6 +141,7 @@ class RegisterController extends Controller
             'userType' => $request->get('userType') ,
             'password' => Hash::make($request->get('password')),
         ];
+        
         if(!empty($request->file('document'))){ 
             $documentPath = $this->uploadImage($request->file('document'), 'images/wholesaler/document');
             $data['document'] = $documentPath;  

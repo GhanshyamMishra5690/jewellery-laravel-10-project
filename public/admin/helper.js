@@ -825,7 +825,28 @@ $("#dashboardAccount").validate({
             },
             error: function(xhr) {
                 $("#loader").hide();
-                displayErrors(xhr.responseJSON.errors); 
+                var errors = xhr.responseJSON.errors;
+                $.each(errors, function (field, messages) {
+                    var element = $('#' + field); // Get the element by its ID
+                    
+                    // Create or update the error message span
+                    var errorId = field + '-error';
+                    var errorMessage = $('<span>').attr({
+                        'id': errorId,
+                        'class': 'error invalid-feedback',
+                        'style': 'display: inline;'
+                    }).text(messages[0]); // Get the first error message
+                    
+                    // Ensure the error span is updated
+                    if (!$('#' + errorId).length) {
+                        errorMessage.insertAfter(element); // Insert after element if not present
+                    } else {
+                        $('#' + errorId).replaceWith(errorMessage); // Replace existing error span
+                    }
+                    
+                    // Add error class to the parent form-group
+                    element.closest(".form-group").addClass("has-error");
+                });
                
             }
         });

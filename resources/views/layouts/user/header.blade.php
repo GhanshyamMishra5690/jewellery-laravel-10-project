@@ -48,6 +48,9 @@
             border-radius: 5px;
             font-size: 27px;
           }
+          .invalid-feedback {   
+                font-size:14px; 
+            }
     </style>
     <script>
         var baseUrl = '{{ url('/') }}'; 
